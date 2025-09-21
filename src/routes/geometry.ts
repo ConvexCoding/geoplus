@@ -1,0 +1,76 @@
+import { StdAsphericTerms } from "./AsphericDefinition";
+
+
+export interface Geometry {
+  kind: string
+  sag(x: number, y: number): number
+}
+
+export class PlaneGeometry implements Geometry {
+  constructor(public radiusX: number, public radiusY: number) {}
+  kind = "plane"
+
+  // hopefully this doesn't get called 
+  sag(x: number, y: number) {
+    return (0.0)
+  }
+}
+
+export class SphereGeometry implements Geometry {
+  constructor(
+    public radius: number, 
+    public conic = 0, 
+  ) {}
+
+  kind = "sphere"
+
+  sag(x: number, y: number) {
+    const r2 = x * x + y * y
+    const c = this.radius === 0 ? 0 : 1 / this.radius
+    const sqrtvalue = 1 - (1 + this.conic) * c * c * r2
+    return sqrtvalue < 0
+      ? 0
+      : (c * r2) / (1 + Math.sqrt(sqrtvalue)) 
+  }
+
+}
+
+export class StandaradAsphereGeomtry implements Geometry {
+  constructor(
+    public radius: number, 
+    public conic = 0, 
+    public asphericTerms = new StdAsphericTerms([])
+  ) {}
+
+  kind = "standard asphere"
+
+  sag(x: number, y: number) {
+    const r2 = x * x + y * y
+    const c = this.radius === 0 ? 0 : 1 / this.radius
+    const sqrtvalue = 1 - (1 + this.conic) * c * c * r2
+    return sqrtvalue < 0
+      ? 0
+      : (c * r2) / (1 + Math.sqrt(sqrtvalue)) + this.asphericTerms.sagAt(x, y)
+  }
+
+}
+
+export class CylinderGeometry implements Geometry {
+  constructor(public radiusX: number, public radiusY: number) {}
+  kind = "cylinder"
+
+  sag(x: number, y: number) {
+    return (x * x) / (2 * this.radiusX) + (y * y) / (2 * this.radiusY)
+  }
+
+}
+
+export class AxiconGeometry implements Geometry {
+  constructor(public coneAngle: number) {}
+  kind = "axicon"
+
+  sag(x: number, y: number) {
+    return Math.sqrt(x * x + y * y) * Math.tan(this.coneAngle)
+  }
+
+}
