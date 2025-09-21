@@ -21,9 +21,6 @@
 		console.log(sphere);
 		console.log(cylinder);
 		console.log(sphere2);
-		console.log('==============');
-		console.log(optic1);
-		console.log(optic2);
 		console.log('🟢🟢🟢🟢🟢🟢');
 	}
 </script>
