@@ -4,8 +4,15 @@
 
 	import { Lens } from './Lens';
 	import { Surface } from './surface';
-	import { SphereGeometry, StandaradAsphereGeomtry, CylinderGeometry } from './geometry';
+	import {
+		SphereGeometry,
+		StandaradAsphereGeomtry,
+		CylinderGeometry,
+		PlaneGeometry,
+		AxiconGeometry
+	} from './geometry';
 	import { StdAsphericTerms } from './AsphericDefinition';
+	import { GEOMETRY_TYPES } from './geometry';
 
 	// Example usage of the classes
 	const sphere = new Surface(50, new SphereGeometry(100));
@@ -15,13 +22,11 @@
 	const sphere2 = new Surface(20, new StandaradAsphereGeomtry(2005, 0.1, asphereterms));
 	const optic1 = new Lens(25, 7, 'ZnSe', sphere, cylinder);
 	const optic2 = new Lens(24, 3, 'CdTe', sphere2, sphere);
+	let geovalue = 'sphere';
 
-	function getclass() {
-		console.log('🤨🤨🤨🤨🤨🤨');
-		console.log(sphere);
-		console.log(cylinder);
-		console.log(sphere2);
-		console.log('🟢🟢🟢🟢🟢🟢');
+	function changeGeo(event: Event) {
+		const selectElement = event.target as HTMLSelectElement;
+		geovalue = selectElement.value;
 	}
 </script>
 
@@ -52,6 +57,28 @@
 		<pre class="whitespace-pre"> Optic 2:
       {JSON.stringify(optic2, null, 2)}
     </pre>
+	</div>
+
+	<div class="max-h-[60vh] min-w-0 flex-1 overflow-auto">
+		Pick a Geometry
+		<select on:change={changeGeo} class="mb-2">
+			{#each GEOMETRY_TYPES as geometry}
+				<option value={geometry.value}>{geometry.label}</option>
+			{/each}
+		</select>
+		<pre class="whitespace-pre"> Selected Geometry:
+			{#if geovalue === 'sphere'}
+				{JSON.stringify(new SphereGeometry(22, 0.22), null, 2)}
+			{:else if geovalue === 'plane'}
+				{JSON.stringify(new PlaneGeometry(0, 0), null, 2)}
+			{:else if geovalue === 'CylinderGeometry'}
+				{JSON.stringify(new CylinderGeometry(0, 111), null, 2)}
+			{:else if geovalue === 'StandaradAsphereGeomtry'}
+				{JSON.stringify(new StandaradAsphereGeomtry(0, 0, asphereterms), null, 2)}
+			{:else}
+				{JSON.stringify(new AxiconGeometry(0.123), null, 2)}
+			{/if}
+		</pre>
 	</div>
 </div>
 

@@ -1,5 +1,12 @@
 import { StdAsphericTerms } from "./AsphericDefinition";
 
+export const GEOMETRY_TYPES = [
+  { value: "plane", label: "PlaneGeometry" },
+  { value: "sphere", label: "SphereGeometry" },
+  { value: "standardasphere", label: "StandardAsphereGeometry" },
+  { value: "cylinder", label: "CylinderGeometry" },
+  { value: "axicon", label: "AxiconGeometry" },
+] as const
 
 export interface Geometry {
   kind: string
@@ -7,13 +14,11 @@ export interface Geometry {
 }
 
 export class PlaneGeometry implements Geometry {
-  constructor(public radiusX: number, public radiusY: number) {}
+  constructor(public width: number, public height: number) {}
   kind = "plane"
 
   // hopefully this doesn't get called 
-  sag(x: number, y: number) {
-    return (0.0)
-  }
+  sag(): number { return 0 }
 }
 
 export class SphereGeometry implements Geometry {
