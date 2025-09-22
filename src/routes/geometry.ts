@@ -79,3 +79,32 @@ export class AxiconGeometry implements Geometry {
   }
 
 }
+
+/* schemas for each geometry class */
+
+export const geometrySchemas = {
+    "plane": { 
+      no_parameters: { label: "No Parameters", type: "string", default: "none" }
+     },
+    
+    "sphere": {
+      radius: { label: "Radius", type: "number", default: 10 },
+      conic: { label: "Conic Constant", type: "number", default: 0 }
+    },
+
+  "standard asphere": {
+    radius: { label: "Radius", type: "number", default: 10 },
+    conic: { label: "Conic Constant", type: "number", default: 0 },
+    asphericTerms: { label: "Aspheric Terms", type: "array", default: [] }
+  },
+
+  "cylinder": {
+    radiusX: { label: "Radius X", type: "number", default: 10 },
+    radiusY: { label: "Radius Y", type: "number", default: 10 }
+  },
+
+  "axicon": {
+    coneAngle: { label: "Cone Angle (radians)", type: "number", default: 0.1 }
+  }
+
+} as const;

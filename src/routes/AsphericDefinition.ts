@@ -52,4 +52,11 @@ export class StdAsphericTerms {
   sagAt(x: number, y = 0) {
     return StdAsphericTerms.calcSag(this, x, y)
   }
+
+  toJSON() {
+    return {
+      definition: this.#definition,
+      coeffs: this.#coeffs
+    }
+  }
 }
