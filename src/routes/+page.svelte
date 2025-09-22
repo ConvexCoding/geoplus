@@ -22,12 +22,16 @@
 	const sphere2 = new Surface(20, new StandaradAsphereGeomtry(2005, 0.1, asphereterms));
 	const optic1 = new Lens(25, 7, 'ZnSe', sphere, cylinder);
 	const optic2 = new Lens(24, 3, 'CdTe', sphere2, sphere);
-	let geovalue = 'sphere';
 
-	function changeGeo(event: Event) {
-		const selectElement = event.target as HTMLSelectElement;
-		geovalue = selectElement.value;
-	}
+	// array of classes for Selection in UI
+	let classList = [];
+	classList.push(new PlaneGeometry(0, 0));
+	classList.push(new SphereGeometry(22, 0.22));
+	classList.push(new StandaradAsphereGeomtry(1, 2, asphereterms));
+	classList.push(new CylinderGeometry(0, 111));
+	classList.push(new AxiconGeometry(0.123));
+
+	let geovalue = 0;
 </script>
 
 <section>
@@ -61,24 +65,16 @@
 
 	<div class="max-h-[60vh] min-w-0 flex-1 overflow-auto">
 		Pick a Geometry
-		<select on:change={changeGeo} class="mb-2">
-			{#each GEOMETRY_TYPES as geometry}
-				<option value={geometry.value}>{geometry.label}</option>
+		<select class="mb-2" bind:value={geovalue}>
+			{#each GEOMETRY_TYPES as geometry, index}
+				<option value={index}>{geometry.label}</option>
 			{/each}
 		</select>
-		<pre class="whitespace-pre"> Selected Geometry:
-			{#if geovalue === 'sphere'}
-				{JSON.stringify(new SphereGeometry(22, 0.22), null, 2)}
-			{:else if geovalue === 'plane'}
-				{JSON.stringify(new PlaneGeometry(0, 0), null, 2)}
-			{:else if geovalue === 'CylinderGeometry'}
-				{JSON.stringify(new CylinderGeometry(0, 111), null, 2)}
-			{:else if geovalue === 'StandaradAsphereGeomtry'}
-				{JSON.stringify(new StandaradAsphereGeomtry(0, 0, asphereterms), null, 2)}
-			{:else}
-				{JSON.stringify(new AxiconGeometry(0.123), null, 2)}
-			{/if}
-		</pre>
+		<pre class="whitespace-pre"> Selected Geometry: {JSON.stringify(
+				classList[geovalue],
+				null,
+				2
+			)} </pre>
 	</div>
 </div>
 
